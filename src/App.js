@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {MemeGenerator} from "./components/MemeGenerator";
 
 // Two componants :
 // ...
@@ -8,13 +9,18 @@ import React, { useState, useEffect } from "react";
 function App() {
 
   const [templates, setTemplates] = useState([]);
-  const [template, setTemplate] = useState(null);
 
   // connection to API imgflip
   useEffect(() => {
-    fetch("https://api.imgflip.com/get_memes").then((x) =>
-      x.json().then((response) => setTemplates(response.data.memes))
-    );
+
+    const fetchData = async () => {
+      await fetch("https://api.imgflip.com/get_memes").then((x) =>{
+        return x.json().then((response) => setTemplates(response.data.memes))
+       });
+    }
+
+    fetchData()
+    
   }, []);
 
   return (
@@ -27,19 +33,11 @@ function App() {
        
         <div className="mt-4 column is-10">
         <div className="columns is-flex-wrap-wrap"> 
-        {!template &&
+        {templates &&
             templates.map((template) => {
               return (
-                <div className="column is-3 ">
-                  <img
-                    style={{ width: 200 }}
-                    key={template.id}
-                    src={template.url}
-                    alt={template.name}
-                    onClick={() => {
-                      // setId(template.id)
-                    }}
-                  />
+                <div key={template.id} className="column is-3 ">
+                  <MemeGenerator template={template}/>
                 </div>
               );
             })}
