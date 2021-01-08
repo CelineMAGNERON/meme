@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { PASSWORD, USERNAME } from "../constantes/constant";
 
-export const MemeGenerator = ({ template }) => {
-  const [setId] = useState(null);
-  const [textTop, setTextTop] = useState("");
-  const [textBottom, setTextBottom] = useState("");
+export const MemeGenerator = ({ template, setResults }) => {
 
+  const [setId] = useState(null);
+
+  const [textTop, setTextTop] = useState("");
+
+  const [textBottom, setTextBottom] = useState("");
+  
   const objectToQueryParam = (obj) => {
     const params = Object.entries(obj).map(([key, value]) => `${key}=${value}`);
     return "?" + params.join("&");
@@ -25,7 +28,7 @@ export const MemeGenerator = ({ template }) => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          // créer un meme depuis l'API
+          // créé un meme depuis l'API
           const params = {
             template_id: template.id,
             text0: textTop,
@@ -35,9 +38,12 @@ export const MemeGenerator = ({ template }) => {
           };
           const response = await fetch(
             `https://api.imgflip.com/caption_image${objectToQueryParam(params)}`
-          );
-          const data = await response.json();
-          console.log(data);
+          ).then(x => x.json());
+          // charge le nouveau meme dans setResults pour être appelé dans le parent
+          setResults(prevState => {
+            console.log(prevState)
+            return [...prevState, response.data.url]
+          })
         }}
       >
         <label>
