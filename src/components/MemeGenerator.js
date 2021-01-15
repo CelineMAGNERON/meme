@@ -36,7 +36,6 @@ export const MemeGenerator = ({ template, setResults }) => {
             username: USERNAME,
             password: PASSWORD,
           };
-          console.log(params)
           const response = await fetch(
             `https://api.imgflip.com/caption_image${objectToQueryParam(params)}`
           ).then(x => x.json());
