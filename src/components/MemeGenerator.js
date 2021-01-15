@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { PASSWORD, USERNAME } from "../constantes/constant";
 
 export const MemeGenerator = ({ template, setResults }) => {
-
   const [setId] = useState(null);
 
   const [textTop, setTextTop] = useState("");
 
   const [textBottom, setTextBottom] = useState("");
-  
+
   const objectToQueryParam = (obj) => {
     const params = Object.entries(obj).map(([key, value]) => `${key}=${value}`);
     return "?" + params.join("&");
@@ -38,11 +37,11 @@ export const MemeGenerator = ({ template, setResults }) => {
           };
           const response = await fetch(
             `https://api.imgflip.com/caption_image${objectToQueryParam(params)}`
-          ).then(x => x.json());
+          ).then((x) => x.json());
           // charge le nouveau meme dans setResults pour être appelé dans le parent
-          setResults(prevState => {
-            return [...prevState, response.data.url]
-          })
+          setResults((prevState) => {
+            return [...prevState, response.data.url];
+          });
         }}
       >
         <label>
