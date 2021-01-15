@@ -36,12 +36,12 @@ export const MemeGenerator = ({ template, setResults }) => {
             username: USERNAME,
             password: PASSWORD,
           };
+          console.log(params)
           const response = await fetch(
             `https://api.imgflip.com/caption_image${objectToQueryParam(params)}`
           ).then(x => x.json());
           // charge le nouveau meme dans setResults pour être appelé dans le parent
           setResults(prevState => {
-            console.log(prevState)
             return [...prevState, response.data.url]
           })
         }}
